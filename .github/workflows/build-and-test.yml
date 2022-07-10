@@ -28,6 +28,11 @@ jobs:
         with:
           cmake-version: 3.18
 
+      - name: Install LLVM
+        uses: KyleMayes/install-llvm-action@v1.5.3
+        with:
+          version: latest
+
       - name: Install GCC 11
         if: runner.os == 'Linux'
         run: |
