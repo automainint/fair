@@ -37,14 +37,14 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          echo "$LLVM_PATH" >> $GITHUB_PATH
+          echo "$LLVM_PATH\bin" >> $GITHUB_PATH
 
       - name: Test LLVM
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          dir "$LLVM_PATH"
-          "C:\Program Files\LLVM\llc.exe" --version
+          dir "$LLVM_PATH\bin"
+          "C:\Program Files\LLVM\bin\llc.exe" --version
           llc.exe --version
           llc --version
 
