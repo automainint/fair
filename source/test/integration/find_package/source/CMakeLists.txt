@@ -6,5 +6,5 @@ find_package(fair REQUIRED)
 
 add_executable(${NAME})
 target_sources(${NAME} PRIVATE main.cpp)
-target_link_libraries(${NAME} PRIVATE fair::fair)
+target_link_libraries(${NAME} PRIVATE fair::libfair)
 install(TARGETS ${NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
