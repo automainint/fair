@@ -6,9 +6,8 @@ include(FetchContent)
 FetchContent_Declare(
   fair
   GIT_REPOSITORY https://github.com/automainint/fair.git
-  GIT_TAG dev
-  CMAKE_ARGS
-  -D FAIR_ENABLE_TESTING=OFF)
+  GIT_TAG dev)
+set(FAIR_ENABLE_TESTING OFF)
 FetchContent_MakeAvailable(fair)
 
 add_executable(${NAME})

@@ -37,8 +37,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          echo "C:\Program Files\LLVM" >> $GITHUB_PATH
-          llc --version
+          echo "$LLVM_PATH/bin" >> $GITHUB_PATH
 
       - name: Install GCC 11
         if: runner.os == 'Linux'
