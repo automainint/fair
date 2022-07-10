@@ -43,7 +43,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          dir /b /s /on $LLVM_PATH
+          dir "$LLVM_PATH"
           "C:\Program Files\LLVM\llc.exe" --version
           llc.exe --version
           llc --version
