@@ -37,6 +37,10 @@ if(FAIR_ENABLE_STANDALONE OR FAIR_ENABLE_TESTING)
   add_executable(${FAIR_PROJECT}::${FAIR_EXE} ALIAS ${FAIR_EXE})
   target_compile_features(${FAIR_EXE} PRIVATE cxx_std_20)
   target_link_libraries(${FAIR_EXE} PRIVATE ${FAIR_LIBRARY})
+
+  if(FAIR_ENABLE_TESTING)
+    target_compile_definitions(${FAIR_EXE} PRIVATE FAIR_ENABLE_TESTING)
+  endif()
 endif()
 
 enable_testing()

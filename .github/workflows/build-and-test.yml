@@ -33,6 +33,12 @@ jobs:
         with:
           version: 13
 
+      - name: Add LLVM to path
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          echo "C:\\Program Files\\LLVM" >> $GITHUB_PATH
+
       - name: Install GCC 11
         if: runner.os == 'Linux'
         run: |
