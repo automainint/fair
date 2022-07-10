@@ -39,11 +39,13 @@ jobs:
         run: |
           echo "$LLVM_PATH/bin" >> $GITHUB_PATH
 
-      - name: Test path
+      - name: Test LLVL
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          echo "$PATH"
+          "C:\Program Files\LLVM\bin\llc.exe" --version
+          llc.exe --version
+          llc --version
 
       - name: Install GCC 11
         if: runner.os == 'Linux'
