@@ -81,9 +81,9 @@ def gen_cmake(folder: str, target_name: str):
   write_subdirs(folder, target_name)
 
 def main():
-  gen_cmake(os.path.join('..', 'source', 'fair'),       '${FAIR_LIBRARY}')
-  gen_cmake(os.path.join('..', 'source', 'standalone'), '${FAIR_EXE}')
-  gen_cmake(os.path.join('..', 'source', 'test'),       '${FAIR_EXE}')
+  gen_cmake(os.path.join('..', 'source', 'fair'),               '${FAIR_LIBRARY}')
+  gen_cmake(os.path.join('..', 'source', 'standalone'),         '${FAIR_EXE}')
+  gen_cmake(os.path.join('..', 'source', 'test', 'unittests'),  '${FAIR_EXE}')
 
 if __name__ == '__main__':
   main()

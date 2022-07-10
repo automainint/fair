@@ -1,4 +1,4 @@
 target_sources(
-  ${FAIR_LIBRARY}
+  ${FAIR_EXE}
     PRIVATE
       fair.test.cpp)
