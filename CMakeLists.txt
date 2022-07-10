@@ -5,8 +5,8 @@ option(FAIR_ENABLE_STANDALONE "Enable standalone" ON)
 option(FAIR_ENABLE_TESTING "Enable testing" ON)
 
 set(FAIR_PROJECT fair)
-set(FAIR_LIBRARY fair)
-set(FAIR_EXE fairc)
+set(FAIR_LIBRARY libfair)
+set(FAIR_EXE fair)
 set(FAIR_TARGETS fair-targets)
 set(FAIR_UNITTESTS fair-unittests)
 
@@ -24,6 +24,7 @@ if(FAIR_ENABLE_LIBRARY OR FAIR_ENABLE_STANDALONE OR FAIR_ENABLE_TESTING)
   find_package(Threads REQUIRED)
 
   add_library(${FAIR_LIBRARY} STATIC)
+  set_target_properties(${FAIR_LIBRARY} PROPERTIES PREFIX "")
   add_library(${FAIR_PROJECT}::${FAIR_LIBRARY} ALIAS ${FAIR_LIBRARY})
   target_include_directories(
     ${FAIR_LIBRARY} INTERFACE
