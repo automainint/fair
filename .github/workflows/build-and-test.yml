@@ -28,24 +28,6 @@ jobs:
         with:
           cmake-version: 3.18
 
-      - name: Install LLVM
-        uses: KyleMayes/install-llvm-action@v1.5.3
-        with:
-          version: 13
-
-      - name: Add LLVM to path
-        if: runner.os == 'Windows'
-        shell: bash
-        run: |
-          echo "$LLVM_PATH\bin" >> $GITHUB_PATH
-
-      - name: Test LLVM
-        if: runner.os == 'Windows'
-        shell: bash
-        run: |
-          dir "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\Llvm\bin\"
-          dir "C:\Program Files\Microsoft Visual Studio\2019\Enterprise\VC\Tools\Llvm\bin\"
-
       - name: Install GCC 11
         if: runner.os == 'Linux'
         run: |
@@ -62,6 +44,12 @@ jobs:
         run: |
           choco install opencppcoverage
           echo "C:/Program Files/OpenCppCoverage" >> $GITHUB_PATH
+
+      - name: Install LLVM
+        if: runner.os == 'Linux'
+        uses: KyleMayes/install-llvm-action@v1.5.3
+        with:
+          version: 13
 
       - name: Build with GCC 11
         if: runner.os != 'Windows'
@@ -90,7 +78,7 @@ jobs:
         if: runner.os == 'macOS'
         working-directory: ${{ github.workspace }}/build
         run: |
-          ctest -V -C $BUILD_TYPE
+          ctest -V -C $BUILD_TYPE -R fair-unittests
           gcovr --gcov-executable gcov-11 -j 2 --delete --root ../source/ --exclude '\.\./source/test/' --print-summary --xml-pretty --xml coverage.xml .
 
       - name: Run tests & generate coverage on Windows
@@ -98,7 +86,7 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}/build
         run: |
-          OpenCppCoverage.exe --sources source\\* --excluded_sources source\\test\\* --export_type cobertura:coverage.xml --cover_children -- ctest -V -C $BUILD_TYPE
+          OpenCppCoverage.exe --sources source\\* --excluded_sources source\\test\\* --export_type cobertura:coverage.xml --cover_children -- ctest -V -C $BUILD_TYPE -R fair-unittests
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
@@ -148,6 +136,7 @@ jobs:
         working-directory: ./source/test/integration/${{ matrix.name }}
 
       - name: Run
+        if: runner.os == 'Linux'
         shell: bash
         run:
           ctest -V -C $BUILD_TYPE
