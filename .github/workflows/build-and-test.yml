@@ -43,10 +43,8 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          dir "$LLVM_PATH\bin"
-          "C:\Program Files\LLVM\bin\llc.exe" --version
-          llc.exe --version
-          llc --version
+          dir "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\Llvm\bin\"
+          dir "C:\Program Files\Microsoft Visual Studio\2019\Enterprise\VC\Tools\Llvm\bin\"
 
       - name: Install GCC 11
         if: runner.os == 'Linux'
