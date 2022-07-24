@@ -30,8 +30,8 @@ namespace fair {
     in.read(buf, sizeof(buf));
 
     if (string_view { buf }.find("main()") != string_view::npos) {
-      out << "define i32 @main() {\n"
-             "  ret i32 0\n"
+      out << "int main(int argc, char **argv) {\n"
+             "  return 0;\n"
              "}\n";
     }
 
