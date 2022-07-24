@@ -20,7 +20,7 @@ project(
   ${FAIR_PROJECT}
   VERSION 0.1.1
   DESCRIPTION "Compiler experiments"
-  LANGUAGES CXX)
+  LANGUAGES C)
 
 if(FAIR_ENABLE_LIBRARY OR FAIR_ENABLE_STANDALONE OR FAIR_ENABLE_TESTING)
   find_package(Threads REQUIRED)
@@ -31,14 +31,14 @@ if(FAIR_ENABLE_LIBRARY OR FAIR_ENABLE_STANDALONE OR FAIR_ENABLE_TESTING)
   target_include_directories(
     ${FAIR_LIBRARY} INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/source>)
-  target_compile_features(${FAIR_LIBRARY} PUBLIC cxx_std_20)
+  target_compile_features(${FAIR_LIBRARY} PUBLIC c_std_99)
   target_link_libraries(${FAIR_LIBRARY} PUBLIC Threads::Threads)
 endif()
 
 if(FAIR_ENABLE_STANDALONE OR FAIR_ENABLE_TESTING)
   add_executable(${FAIR_EXE})
   add_executable(${FAIR_PROJECT}::${FAIR_EXE} ALIAS ${FAIR_EXE})
-  target_compile_features(${FAIR_EXE} PRIVATE cxx_std_20)
+  target_compile_features(${FAIR_EXE} PRIVATE c_std_99)
   target_link_libraries(${FAIR_EXE} PRIVATE ${FAIR_LIBRARY})
 
   if(FAIR_ENABLE_TESTING)
@@ -49,21 +49,6 @@ endif()
 enable_testing()
 
 if(FAIR_ENABLE_TESTING)
-  find_package(Catch2 QUIET)
-
-  if(NOT Catch2_FOUND)
-    include(FetchContent)
-
-    FetchContent_Declare(
-      Catch2
-      GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-      GIT_TAG v2.13.9)
-
-    FetchContent_MakeAvailable(Catch2)
-  endif()
-
-  target_link_libraries(${FAIR_EXE} PRIVATE Catch2::Catch2)
-
   if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(
       ${FAIR_LIBRARY} PUBLIC

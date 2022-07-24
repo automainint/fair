@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 set(NAME fair-integration-fetch-content)
-project(${NAME} CXX)
+project(${NAME} C)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -11,7 +11,7 @@ set(FAIR_ENABLE_TESTING OFF)
 FetchContent_MakeAvailable(fair)
 
 add_executable(${NAME})
-target_sources(${NAME} PRIVATE main.cpp)
+target_sources(${NAME} PRIVATE main.c)
 target_link_libraries(${NAME} PRIVATE fair::libfair)
 
 enable_testing()
