@@ -58,7 +58,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          cmake -D FAIR_CC="C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.29.30133/bin/Hostx64/x64/cl.exe" -B build -S .
+          cmake -D FAIR_CC=clang -B build -S .
           cmake --build build --config $BUILD_TYPE
 
       - name: Run tests & generate coverage on Linux
