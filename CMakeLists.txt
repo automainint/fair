@@ -10,6 +10,8 @@ set(FAIR_EXE fair)
 set(FAIR_TARGETS fair-targets)
 set(FAIR_UNITTESTS fair-unittests)
 
+set(FAIR_CC cc CACHE STRING "C compiler to use in tests")
+
 if(NOT DEFINED CMAKE_BUILD_PARALLEL_LEVEL)
   set(CMAKE_BUILD_PARALLEL_LEVEL 3)
 endif()
@@ -84,7 +86,7 @@ if(FAIR_ENABLE_TESTING)
 
   add_test(
     NAME empty
-    COMMAND ${CMAKE_COMMAND} -D FAIR_EXE=$<TARGET_FILE:${FAIR_EXE}> -D SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/test -D TEST_NAME=empty -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/compile_and_run.cmake)
+    COMMAND ${CMAKE_COMMAND} -D FAIR_CC=${FAIR_CC} -D FAIR_EXE=$<TARGET_FILE:${FAIR_EXE}> -D SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/test -D TEST_NAME=empty -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/compile_and_run.cmake)
 
   set_tests_properties(
     empty
@@ -94,7 +96,7 @@ if(FAIR_ENABLE_TESTING)
 
   add_test(
     NAME blank
-    COMMAND ${CMAKE_COMMAND} -D FAIR_EXE=$<TARGET_FILE:${FAIR_EXE}> -D SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/test -D TEST_NAME=blank -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/compile_and_run.cmake)
+    COMMAND ${CMAKE_COMMAND} -D FAIR_CC=${FAIR_CC} -D FAIR_EXE=$<TARGET_FILE:${FAIR_EXE}> -D SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/test -D TEST_NAME=blank -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/compile_and_run.cmake)
 
   set_tests_properties(
     blank
