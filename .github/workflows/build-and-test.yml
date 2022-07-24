@@ -58,7 +58,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          cmake -D CMAKE_BUILD_TYPE=$BUILD_TYPE -D FAIR_CC=$CC -B build -S .
+          cmake -D CMAKE_BUILD_TYPE=$BUILD_TYPE -D FAIR_CC=cl -B build -S .
           cmake --build build --config $BUILD_TYPE
 
       - name: Run tests & generate coverage on Linux
