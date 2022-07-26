@@ -3,9 +3,7 @@
 #include <string.h>
 
 #ifdef FAIR_ENABLE_TESTING
-int run_tests() {
-  return 0;
-}
+int run_tests();
 #endif
 
 int main(int argc, char **argv) {

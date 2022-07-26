@@ -4,16 +4,16 @@
 #include <stdio.h>
 #include <string.h>
 
-typedef struct {
+struct parsed_arguments {
   bool        is_error;
   char const *input_file;
   char const *output_file;
-} parsed_arguments;
+};
 
-parsed_arguments parse_arguments(int argc, char **argv) {
-  parsed_arguments result = { .is_error    = false,
-                              .input_file  = NULL,
-                              .output_file = NULL };
+struct parsed_arguments parse_arguments(int argc, char **argv) {
+  struct parsed_arguments result = { .is_error    = false,
+                                     .input_file  = NULL,
+                                     .output_file = NULL };
 
   for (int i = 0; i < argc; i++) {
     if (strcmp("-i", argv[i]) == 0 && i + 1 < argc) {
@@ -34,18 +34,18 @@ parsed_arguments parse_arguments(int argc, char **argv) {
   return result;
 }
 
-typedef struct {
+struct syntax_tree {
   bool is_error;
   bool is_main;
-} ast;
+};
 
-FILE *read_input(parsed_arguments args) {
+FILE *read_input(struct parsed_arguments args) {
   if (args.is_error)
     return NULL;
   return fopen(args.input_file, "r");
 }
 
-FILE *write_output(parsed_arguments args) {
+FILE *write_output(struct parsed_arguments args) {
   if (args.is_error)
     return NULL;
   return fopen(args.output_file, "w");
@@ -56,8 +56,8 @@ void close_file(FILE *f) {
     fclose(f);
 }
 
-ast parse_file(FILE *in) {
-  ast result = { .is_error = false, .is_main = false };
+struct syntax_tree parse_file(FILE *in) {
+  struct syntax_tree result = { .is_error = false, .is_main = false };
 
   if (in == NULL)
     result.is_error = true;
@@ -72,7 +72,7 @@ ast parse_file(FILE *in) {
   return result;
 }
 
-int print_ast(ast data, FILE *out) {
+int print_c(struct syntax_tree data, FILE *out) {
   if (data.is_error || out == NULL)
     return 1;
   if (data.is_main) {
@@ -84,12 +84,12 @@ int print_ast(ast data, FILE *out) {
 }
 
 int fair_run(int argc, char **argv) {
-  parsed_arguments args = parse_arguments(argc, argv);
+  struct parsed_arguments args = parse_arguments(argc, argv);
 
   FILE *in  = read_input(args);
   FILE *out = write_output(args);
 
-  int status = print_ast(parse_file(in), out);
+  int status = print_c(parse_file(in), out);
 
   close_file(in);
   close_file(out);
