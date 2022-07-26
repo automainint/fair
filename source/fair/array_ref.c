@@ -12,8 +12,8 @@ bool fair_ar_equal_bytes(ptrdiff_t left_element_size,
   if (left_size != right_size)
     return false;
   for (ptrdiff_t i = 0; i < left_size; i++)
-    if (memcmp(left_data + i * left_element_size,
-               right_data + i * left_element_size,
+    if (memcmp((char const *) left_data + i * left_element_size,
+               (char const *) right_data + i * left_element_size,
                left_element_size) != 0)
       return false;
   return true;
@@ -29,8 +29,9 @@ int fair_ar_compare(ptrdiff_t left_element_size, ptrdiff_t left_size,
   if (left_element_size > right_element_size)
     return 1;
   for (ptrdiff_t i = 0; i < left_size && i < right_size; i++) {
-    int const c = compare(left_data + i * left_element_size,
-                          right_data + i * left_element_size);
+    int const c = compare(
+        (char const *) left_data + i * left_element_size,
+        (char const *) right_data + i * left_element_size);
     if (c != 0)
       return c;
   }
