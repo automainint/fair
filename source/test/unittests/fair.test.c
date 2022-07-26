@@ -1,4 +1,5 @@
 #include "../../fair/fair.h"
+#include "../../fair/array_ref.h"
 #include "test.h"
 
 #include <stdlib.h>
@@ -35,37 +36,26 @@ static struct fair_input_stream wrap(char const *text) {
   return stream;
 }
 
-static void *allocate(void *_, size_t size) {
-  return malloc(size);
-}
-
-static void deallocate(void *_, void *pointer) {
-  free(pointer);
-}
-
-static struct fair_allocator alloc() {
-  struct fair_allocator a = { .state      = NULL,
-                              .allocate   = allocate,
-                              .deallocate = deallocate };
-  return a;
-}
-
 TEST("syntax tree empty") {
-  struct fair_input_stream in   = wrap("");
-  struct fair_syntax_tree  tree = fair_parse(alloc(), in);
+  struct fair_input_stream in  = wrap("");
+  struct fair_syntax_tree tree = fair_parse(fair_alloc_default(), in);
 
-  REQUIRE(tree.type == FAIR_NODE_EMPTY);
+  REQUIRE(tree.size == 0);
 
   free(in.state);
+  FAIR_SYNTAX_TREE_DESTROY(tree);
 }
 
 TEST("syntax tree function") {
-  struct fair_input_stream in   = wrap("fn foo() { }");
-  struct fair_syntax_tree  tree = fair_parse(alloc(), in);
+  struct fair_input_stream in  = wrap("fn foo() { }");
+  struct fair_syntax_tree tree = fair_parse(fair_alloc_default(), in);
 
-  REQUIRE(tree.type == FAIR_NODE_FUNCTION);
-  REQUIRE(strcmp("foo", tree.node.function.name) == 0);
+  FAIR_AR(s_foo, char) = { .size = 3, .values = "foo" };
+
+  REQUIRE(tree.size == 1);
+  REQUIRE(tree.values[0].type == FAIR_NODE_FUNCTION);
+  REQUIRE(FAIR_AR_EQUAL(s_foo, tree.values[0].function.name));
 
   free(in.state);
-  free(tree.node.function.name);
+  FAIR_SYNTAX_TREE_DESTROY(tree);
 }

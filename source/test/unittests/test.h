@@ -9,8 +9,13 @@ extern "C" {
 #include <stddef.h>
 #include <string.h>
 
-#define FAIR_TESTS_SIZE_LIMIT 0x1000
-#define FAIR_TEST_STRING_SIZE 0x100
+#ifndef FAIR_TESTS_SIZE_LIMIT
+#  define FAIR_TESTS_SIZE_LIMIT 0x1000
+#endif
+
+#ifndef FAIR_TEST_STRING_SIZE
+#  define FAIR_TEST_STRING_SIZE 0x100
+#endif
 
 typedef void (*fair_test_report)(ptrdiff_t, bool);
 typedef void (*fair_test_function)(ptrdiff_t, fair_test_report);
@@ -54,11 +59,13 @@ extern struct fair_tests_list fair_tests_list;
       ptrdiff_t, fair_test_report);                                  \
   FAIR_TEST_ON_START(FAIR_TEST_CONCAT2(fair_test_case_, __LINE__)) { \
     ptrdiff_t n = fair_tests_list.size;                              \
-    fair_tests_list.size++;                                          \
-    fair_tests_list.tests[n].test_fn = FAIR_TEST_CONCAT2(            \
-        fair_test_run_, __LINE__);                                   \
-    strcpy(fair_tests_list.tests[n].test_name, name);                \
-    fair_tests_list.tests[n].test_status = true;                     \
+    if (n < FAIR_TESTS_SIZE_LIMIT) {                                 \
+      fair_tests_list.size++;                                        \
+      fair_tests_list.tests[n].test_fn = FAIR_TEST_CONCAT2(          \
+          fair_test_run_, __LINE__);                                 \
+      strcpy(fair_tests_list.tests[n].test_name, name);              \
+      fair_tests_list.tests[n].test_status = true;                   \
+    }                                                                \
   }                                                                  \
   static void FAIR_TEST_CONCAT2(fair_test_run_, __LINE__)(           \
       ptrdiff_t        fair_test_index_,                             \

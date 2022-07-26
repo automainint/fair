@@ -1,7 +1,7 @@
 #ifndef FAIR_FAIR_H
 #define FAIR_FAIR_H
 
-#include <stddef.h>
+#include "dynamic_array.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -10,31 +10,33 @@ extern "C" {
 #define FAIR_NODE_EMPTY 0
 #define FAIR_NODE_FUNCTION 1
 
-typedef void *(*fair_allocate)(void *state, size_t size);
-typedef void (*fair_deallocate)(void *state, void *pointer);
-
 typedef ptrdiff_t (*fair_read_fn)(void *state, ptrdiff_t size,
                                   char *dst);
-
-struct fair_allocator {
-  void           *state;
-  fair_allocate   allocate;
-  fair_deallocate deallocate;
-};
 
 struct fair_input_stream {
   void        *state;
   fair_read_fn read;
 };
 
-struct fair_syntax_tree {
+struct fair_syntax_tree_node {
   ptrdiff_t type;
   union {
     struct {
-      char *name;
+      FAIR_DA(name, char);
     } function;
-  } node;
+  };
 };
+
+FAIR_DA_TYPE(fair_syntax_tree, struct fair_syntax_tree_node);
+
+#define FAIR_SYNTAX_TREE_DESTROY(tree_)                            \
+  {                                                                \
+    for (ptrdiff_t fair_i_ = 0; fair_i_ < (tree_).size; fair_i_++) \
+      if ((tree_).values[fair_i_].type == FAIR_NODE_FUNCTION) {    \
+        FAIR_DA_DESTROY((tree_).values[fair_i_].function.name);    \
+      }                                                            \
+    FAIR_DA_DESTROY((tree_));                                      \
+  }
 
 struct fair_syntax_tree fair_parse(struct fair_allocator    alloc,
                                    struct fair_input_stream in);
