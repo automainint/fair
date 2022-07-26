@@ -1,4 +1,6 @@
 #include "../../fair/dynamic_array.h"
+
+#define FAIR_TEST_FILE dynamic_array
 #include "test.h"
 
 TEST("dynamic array empty") {

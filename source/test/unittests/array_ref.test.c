@@ -1,4 +1,6 @@
 #include "../../fair/array_ref.h"
+
+#define FAIR_TEST_FILE array_ref
 #include "test.h"
 
 TEST("array ref equal") {

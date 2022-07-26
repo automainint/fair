@@ -51,24 +51,27 @@ extern struct fair_tests_list fair_tests_list;
     static void f(void)
 #endif
 
-#define FAIR_TEST_CONCAT(a, b) a##b
-#define FAIR_TEST_CONCAT2(a, b) FAIR_TEST_CONCAT(a, b)
+#define FAIR_TEST_CONCAT(a, b, c) a##b##c
+#define FAIR_TEST_CONCAT2(a, b, c) FAIR_TEST_CONCAT(a, b, c)
 
-#define TEST(name)                                                   \
-  static void FAIR_TEST_CONCAT2(fair_test_run_, __LINE__)(           \
-      ptrdiff_t, fair_test_report);                                  \
-  FAIR_TEST_ON_START(FAIR_TEST_CONCAT2(fair_test_case_, __LINE__)) { \
-    ptrdiff_t n = fair_tests_list.size;                              \
-    if (n < FAIR_TESTS_SIZE_LIMIT) {                                 \
-      fair_tests_list.size++;                                        \
-      fair_tests_list.tests[n].test_fn = FAIR_TEST_CONCAT2(          \
-          fair_test_run_, __LINE__);                                 \
-      strcpy(fair_tests_list.tests[n].test_name, name);              \
-      fair_tests_list.tests[n].test_status = true;                   \
-    }                                                                \
-  }                                                                  \
-  static void FAIR_TEST_CONCAT2(fair_test_run_, __LINE__)(           \
-      ptrdiff_t        fair_test_index_,                             \
+#define TEST(name)                                                 \
+  static void FAIR_TEST_CONCAT2(fair_test_run_, __LINE__,          \
+                                FAIR_TEST_FILE)(ptrdiff_t,         \
+                                                fair_test_report); \
+  FAIR_TEST_ON_START(FAIR_TEST_CONCAT2(fair_test_case_, __LINE__,  \
+                                       FAIR_TEST_FILE)) {          \
+    ptrdiff_t n = fair_tests_list.size;                            \
+    if (n < FAIR_TESTS_SIZE_LIMIT) {                               \
+      fair_tests_list.size++;                                      \
+      fair_tests_list.tests[n].test_fn = FAIR_TEST_CONCAT2(        \
+          fair_test_run_, __LINE__, FAIR_TEST_FILE);               \
+      strcpy(fair_tests_list.tests[n].test_name, name);            \
+      fair_tests_list.tests[n].test_status = true;                 \
+    }                                                              \
+  }                                                                \
+  static void FAIR_TEST_CONCAT2(fair_test_run_, __LINE__,          \
+                                FAIR_TEST_FILE)(                   \
+      ptrdiff_t        fair_test_index_,                           \
       fair_test_report fair_test_report_)
 
 #define REQUIRE(ok)                                \

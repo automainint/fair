@@ -1,5 +1,7 @@
 #include "../../fair/fair.h"
 #include "../../fair/array_ref.h"
+
+#define FAIR_TEST_FILE fair
 #include "test.h"
 
 #include <stdlib.h>
