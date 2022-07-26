@@ -67,7 +67,7 @@ if(FAIR_ENABLE_TESTING)
   set_tests_properties(
     ${FAIR_UNITTESTS}
     PROPERTIES
-    TIMEOUT "15")
+    TIMEOUT "30")
 
   add_test(
     NAME empty
@@ -76,7 +76,7 @@ if(FAIR_ENABLE_TESTING)
   set_tests_properties(
     empty
     PROPERTIES
-    TIMEOUT "15"
+    TIMEOUT "30"
     WILL_FAIL TRUE)
 
   add_test(
@@ -86,7 +86,7 @@ if(FAIR_ENABLE_TESTING)
   set_tests_properties(
     blank
     PROPERTIES
-    TIMEOUT "15")
+    TIMEOUT "30")
 endif()
 
 add_subdirectory(source)
