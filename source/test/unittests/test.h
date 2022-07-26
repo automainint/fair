@@ -9,8 +9,6 @@ extern "C" {
 #include <stddef.h>
 #include <string.h>
 
-#define FAIR_TEST_FILE _
-
 #ifndef FAIR_TESTS_SIZE_LIMIT
 #  define FAIR_TESTS_SIZE_LIMIT 0x1000
 #endif
@@ -37,10 +35,10 @@ extern struct fair_tests_list fair_tests_list;
 
 #ifdef _MSC_VER
 #  pragma section(".CRT$XCU", read)
-#  define FAIR_TEST_ON_START_2(f, p)                                \
-    static void f(void);                                            \
-    __declspec(allocate(".CRT$XCU")) static void (*f##_)(void) = f; \
-    __pragma(comment(linker, "/include:" p #f "_")) static void f(  \
+#  define FAIR_TEST_ON_START_2(f, p)                               \
+    static void f(void);                                           \
+    __declspec(allocate(".CRT$XCU")) void (*f##_)(void) = f;       \
+    __pragma(comment(linker, "/include:" p #f "_")) static void f( \
         void)
 #  ifdef _WIN64
 #    define FAIR_TEST_ON_START(f) FAIR_TEST_ON_START_2(f, "")
