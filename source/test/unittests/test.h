@@ -64,7 +64,13 @@ extern struct fair_tests_list fair_tests_list;
       ptrdiff_t        fair_test_index_,                             \
       fair_test_report fair_test_report_)
 
-#define REQUIRE(ok) fair_test_report_(fair_test_index_, (ok))
+#define REQUIRE(ok)                                \
+  {                                                \
+    bool fair_ok_ = (ok);                          \
+    fair_test_report_(fair_test_index_, fair_ok_); \
+    if (!fair_ok_)                                 \
+      return;                                      \
+  }
 
 #ifdef __cplusplus
 }

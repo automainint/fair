@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 struct parsed_arguments {
@@ -81,6 +82,39 @@ int print_c(struct syntax_tree data, FILE *out) {
     fputs("}\n", out);
   }
   return 0;
+}
+
+struct fair_syntax_tree fair_parse(struct fair_allocator    alloc,
+                                   struct fair_input_stream in) {
+  char      buf[0x1000] = { 0 };
+  ptrdiff_t size        = 0;
+
+  for (;;) {
+    ptrdiff_t n = in.read(in.state, 256, buf + size);
+    if (n == 0)
+      break;
+    size += n;
+  }
+
+  if (memcmp("fn ", buf, 3) == 0) {
+    char     *name     = buf + 3;
+    char     *name_end = strstr(name, "(");
+    ptrdiff_t name_len = name_end - name;
+
+    struct fair_syntax_tree tree = {
+      .type               = FAIR_NODE_FUNCTION,
+      .node.function.name = (char *) alloc.allocate(alloc.state,
+                                                    name_len + 1)
+    };
+
+    memset(tree.node.function.name, 0, name_len + 1);
+    memcpy(tree.node.function.name, name, name_len);
+
+    return tree;
+  }
+
+  struct fair_syntax_tree tree = { .type = FAIR_NODE_EMPTY };
+  return tree;
 }
 
 int fair_run(int argc, char **argv) {
