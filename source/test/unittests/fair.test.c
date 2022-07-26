@@ -12,7 +12,7 @@ static ptrdiff_t read_string(void *data, ptrdiff_t size, char *dst) {
   struct string_state *state  = (struct string_state *) data;
   ptrdiff_t            copied = 0;
   while (copied < size &&
-         state->string[state->offset + copied] != '\n')
+         state->string[state->offset + copied] != '\0')
     copied++;
   if (copied > 0) {
     memcpy(dst, state->string + state->offset, copied);

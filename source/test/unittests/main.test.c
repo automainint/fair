@@ -19,7 +19,7 @@ int run_tests() {
       printf("[ FAILED ] %s\n", fair_tests_list.tests[i].test_name);
       status = 1;
     } else {
-      printf("[ OK     ] %s\n", fair_tests_list.tests[i].test_name);
+      printf("[     OK ] %s\n", fair_tests_list.tests[i].test_name);
     }
   }
 
